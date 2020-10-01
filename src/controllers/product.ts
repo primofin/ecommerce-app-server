@@ -35,6 +35,18 @@ export const createProduct = async (
     }
   }
 }
+// GET /products
+export const findAll = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.json(await ProductService.findAll())
+  } catch (error) {
+    next(new NotFoundError('Products not found', error))
+  }
+}
 // GET /product/:productId
 export const findById = async (
   req: Request,
@@ -47,17 +59,41 @@ export const findById = async (
     next(new NotFoundError('Product not found', error))
   }
 }
-
-// GET /products
-export const findAll = async (
+// GET /product/:productName
+export const findByName = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    res.json(await ProductService.findAll())
+    res.json(await ProductService.findByName(req.params.productName))
   } catch (error) {
-    next(new NotFoundError('Products not found', error))
+    next(new NotFoundError('Product not found', error))
+  }
+}
+// GET /product/:productCategory
+export const findByCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.json(await ProductService.findByCategory(req.params.productCategory))
+  } catch (error) {
+    next(new NotFoundError('Product not found', error))
+  }
+}
+
+// GET /product/:productVariants
+export const findByVariants = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.json(await ProductService.findByVariants(req.params.productVariants))
+  } catch (error) {
+    next(new NotFoundError('Product not found', error))
   }
 }
 

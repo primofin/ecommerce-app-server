@@ -4,6 +4,11 @@ function create(product: ProductDocument): Promise<ProductDocument> {
   return product.save()
 }
 
+function findAll(): Promise<ProductDocument[]> {
+  return Product.find().sort({ name: 1 }).exec() // Return a Promise
+}
+
+// find product by ID
 async function findById(productId: string): Promise<ProductDocument> {
   const product = await Product.findById(productId).exec()
   if (!product) {
@@ -12,8 +17,34 @@ async function findById(productId: string): Promise<ProductDocument> {
   return product
 }
 
-function findAll(): Promise<ProductDocument[]> {
-  return Product.find().sort({ name: 1 }).exec() // Return a Promise
+// find product by name
+async function findByName(productName: string): Promise<ProductDocument[]> {
+  const product = await Product.find({ name: productName }).exec()
+  if (!product) {
+    throw new Error(`Product ${productName} not found`)
+  }
+  return product
+}
+
+// find product by Category
+async function findByCategory(
+  productCategory: string
+): Promise<ProductDocument[]> {
+  const product = await Product.find({ category: productCategory }).exec()
+  if (!product) {
+    throw new Error(`Product in ${productCategory} not found`)
+  }
+  return product
+}
+// find product by Variants
+async function findByVariants(
+  productVariants: string
+): Promise<ProductDocument[]> {
+  const product = await Product.find({ variants: productVariants }).exec()
+  if (!product) {
+    throw new Error(`Product with ${productVariants} not found`)
+  }
+  return product
 }
 
 function deleteProduct(productId: string): Promise<ProductDocument | null> {
@@ -49,6 +80,9 @@ export default {
   create,
   findById,
   findAll,
+  findByName,
+  findByCategory,
+  findByVariants,
   deleteProduct,
   update,
 }
