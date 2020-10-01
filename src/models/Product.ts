@@ -1,10 +1,13 @@
 import mongoose, { Document } from 'mongoose'
 
+type VariantObject = {
+  [key: string]: string;
+}
 export type ProductDocument = Document & {
   name: string;
   description: string;
   category: string;
-  variants: string[];
+  variants: VariantObject;
   sizes: string[] | number[];
 }
 
@@ -20,7 +23,7 @@ const productSchema = new mongoose.Schema({
     type: String,
   },
   variants: {
-    type: [String],
+    type: mongoose.Schema.Types.Mixed,
   },
   sizes: {
     type: [String] || [Number],
