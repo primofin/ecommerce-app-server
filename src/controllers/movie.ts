@@ -16,7 +16,6 @@ export const createMovie = async (
 ) => {
   try {
     const { name, publishedYear, genres, duration, characters } = req.body
-
     const movie = new Movie({
       name,
       publishedYear,
@@ -24,7 +23,6 @@ export const createMovie = async (
       duration,
       characters,
     })
-
     await MovieService.create(movie)
     res.json(movie)
   } catch (error) {

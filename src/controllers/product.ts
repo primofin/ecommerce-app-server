@@ -16,7 +16,7 @@ export const createProduct = async (
 ) => {
   try {
     const { name, description, category, variants, sizes } = req.body
-
+    console.log(req.body)
     const product = new Product({
       name,
       description,
@@ -24,7 +24,6 @@ export const createProduct = async (
       variants,
       sizes,
     })
-
     await ProductService.create(product)
     res.json(product)
   } catch (error) {
@@ -35,6 +34,7 @@ export const createProduct = async (
     }
   }
 }
+
 // GET /products
 export const findAll = async (
   req: Request,
