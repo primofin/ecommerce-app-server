@@ -1,4 +1,5 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Document, Schema } from 'mongoose'
+import { ProductDocument } from './Product'
 
 export type UserDocument = Document & {
   username: string;
@@ -9,6 +10,7 @@ export type UserDocument = Document & {
   salt: string;
   isAdmin: boolean;
   isBan: boolean;
+  itemsinCart: ProductDocument[];
 }
 
 const userSchema = new mongoose.Schema({
@@ -38,6 +40,12 @@ const userSchema = new mongoose.Schema({
   isBan: {
     type: Boolean,
   },
+  itemInCart: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+  ],
   date: {
     type: Date,
     default: Date.now(),
