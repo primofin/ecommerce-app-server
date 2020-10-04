@@ -1,14 +1,11 @@
 import mongoose, { Document } from 'mongoose'
 
-// export type VariantObject = {
-//   [key: string]: string;
-// }
 export type ProductDocument = Document & {
   name: string;
   description: string;
   category: string;
   variants: string[];
-  sizes: string[] | number[];
+  sizes: string[] & number[];
 }
 
 const productSchema = new mongoose.Schema({
@@ -21,13 +18,14 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
+    required: true,
   },
   variants: {
-    // type: mongoose.Schema.Types.Mixed,
     type: [String],
   },
   sizes: {
-    type: [String] || [Number],
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
   },
 })
 
