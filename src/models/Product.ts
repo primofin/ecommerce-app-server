@@ -5,7 +5,7 @@ export type ProductDocument = Document & {
   description: string;
   category: string;
   variants: string[];
-  sizes: string[] & number[];
+  sizes: string[] | number[];
 }
 
 const productSchema = new mongoose.Schema({
