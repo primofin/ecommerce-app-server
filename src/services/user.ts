@@ -4,8 +4,11 @@ function create(user: UserDocument): Promise<UserDocument> {
   return user.save()
 }
 
-function findByEmail(email: string): Promise<UserDocument | null> {
-  const user = User.findOne({ email: email }).exec()
+async function findByEmail(email: string): Promise<UserDocument> {
+  const user = await User.findOne({ email: email }).exec()
+  if (!user) {
+    throw new Error(`User with email: ${email} not found`)
+  }
   return user
 }
 /**
@@ -13,8 +16,11 @@ function findByEmail(email: string): Promise<UserDocument | null> {
  *
  * -This function find user that has the match username and return that user
  */
-function findByUsername(username: string): Promise<UserDocument | null> {
-  const user = User.findOne({ username: username }).exec()
+async function findByUsername(username: string): Promise<UserDocument> {
+  const user = await User.findOne({ username: username }).exec()
+  if (!user) {
+    throw new Error(`User ${username} not found`)
+  }
   return user
 }
 
