@@ -1,7 +1,6 @@
 import User, { UserDocument } from '../models/User'
 
 async function create(user: UserDocument): Promise<UserDocument> {
-  console.log('aaaaa')
   return await user.save()
 }
 

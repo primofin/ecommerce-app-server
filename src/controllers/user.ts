@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
 
-import passport from '../config/passport'
 import { genPassword, validPassword } from '../helpers/password'
 import User from '../models/User'
 import UserService from '../services/user'
