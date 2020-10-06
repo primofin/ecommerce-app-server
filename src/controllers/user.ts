@@ -28,14 +28,14 @@ export const postRegisterUser = async (
       isBan,
       isAdmin,
     } = req.body
-    const isEmailExist = await UserService.findByEmail(email)
-    if (isEmailExist) {
-      next(new InternalServerError('Email already in use'))
-    }
-    const isUsernameExist = await UserService.findByUsername(username)
-    if (isUsernameExist) {
-      next(new InternalServerError('Username already in use'))
-    }
+    // const isEmailExist = await UserService.findByEmail(email)
+    // if (isEmailExist) {
+    //   next(new InternalServerError('Email already in use'))
+    // }
+    // const isUsernameExist = await UserService.findByUsername(username)
+    // if (isUsernameExist) {
+    //   next(new InternalServerError('Username already in use'))
+    // }
     const saltHash = genPassword(password)
     const salt = saltHash.salt
     const hash = saltHash.hash
