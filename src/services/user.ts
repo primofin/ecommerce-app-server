@@ -1,7 +1,8 @@
 import User, { UserDocument } from '../models/User'
 
-function create(user: UserDocument): Promise<UserDocument> {
-  return user.save()
+async function create(user: UserDocument): Promise<UserDocument> {
+  console.log('aaaaa')
+  return await user.save()
 }
 
 async function findByEmail(email: string): Promise<UserDocument> {

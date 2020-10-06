@@ -1,6 +1,6 @@
 import request from 'supertest'
 
-import Movie, { MovieDocument } from '../../src/models/Movie'
+import { MovieDocument } from '../../src/models/Movie'
 import app from '../../src/app'
 import * as dbHelper from '../db-helper'
 
