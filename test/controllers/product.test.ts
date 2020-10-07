@@ -52,7 +52,7 @@ describe('product controller', () => {
       })
     expect(res.status).toBe(400)
   })
-  it('should get back an existing product', async () => {
+  it('should get back an existing product by productId', async () => {
     let res = await createProduct()
     expect(res.status).toBe(200)
 
@@ -84,6 +84,21 @@ describe('product controller', () => {
     expect(res3.body.length).toEqual(2)
     expect(res3.body[0]._id).toEqual(res1.body._id)
     expect(res3.body[1]._id).toEqual(res2.body._id)
+  })
+
+  it('It should get back a product by its variant', async () => {
+    let res = await createProduct()
+    expect(res.status).toBe(200)
+    const variants = res.body.variants
+    const variant = res.body.variants[0]
+    res = await request(app).get(`/api/v1/products/findByVariant/${variant}`)
+    expect(res.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          variants: variants
+        }),
+      ])
+    )
   })
 
   it('should update an existing product', async () => {

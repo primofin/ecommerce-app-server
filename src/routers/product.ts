@@ -6,7 +6,7 @@ import {
   findAll,
   findByName,
   findByCategory,
-  findByVariants,
+  findByVariant,
   deleteProduct,
   updateProduct,
 } from '../controllers/product'
@@ -18,7 +18,7 @@ router.get('/', findAll)
 router.get('/:productId', findById)
 router.get('/findByName/:productName', findByName)
 router.get('/findByCategory/:productCategory', findByCategory)
-router.get('/findByVariants/:productVariants', findByVariants)
+router.get('/findByVariant/:productVariants', findByVariant)
 router.put('/:productId', updateProduct)
 router.delete('/:productId', deleteProduct)
 router.post('/', createProduct)

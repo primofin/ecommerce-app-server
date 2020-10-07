@@ -37,12 +37,12 @@ async function findByCategory(
   return product
 }
 // find product by Variants
-async function findByVariants(
-  productVariants: string
+async function findByVariant(
+  variant: string
 ): Promise<ProductDocument[]> {
-  const product = await Product.find({ variants: productVariants }).exec()
+  const product = await Product.find({ variants: variant }).exec()
   if (!product) {
-    throw new Error(`Product with ${productVariants} not found`)
+    throw new Error(`Product with ${variant} not found`)
   }
   return product
 }
@@ -82,7 +82,7 @@ export default {
   findAll,
   findByName,
   findByCategory,
-  findByVariants,
+  findByVariant,
   deleteProduct,
   update,
 }
