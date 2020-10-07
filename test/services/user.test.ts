@@ -1,22 +1,16 @@
 import User from '../../src/models/User'
 import UserService from '../../src/services/user'
-import { genPassword } from '../../src/helpers/password'
 import * as dbHelper from '../db-helper'
 
 const nonExistingUserId = '5e57b77b5744fa0b461c7906'
 
 async function createUser() {
-  const password = 'testabcd'
-  const saltHash = genPassword(password)
-  const salt = saltHash.salt
-  const hash = saltHash.hash
   const user = new User({
     username: 'abc',
     email: 'abc@gmail.com',
     firstName: 'abc',
     lastName: 'xyz',
-    hash: hash,
-    salt: salt
+    password: 'abcd'
   })
   return await UserService.create(user)
 }
@@ -39,8 +33,8 @@ describe('user service', () => {
     expect(user).toHaveProperty('username')
     expect(user).toHaveProperty('email')
     expect(user).toHaveProperty('firstName')
-    expect(user).toHaveProperty('hash')
-    expect(user).toHaveProperty('salt')
+    expect(user).toHaveProperty('password')
+
   })
   
   it('It should get a user with email', async () => {

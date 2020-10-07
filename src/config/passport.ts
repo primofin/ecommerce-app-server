@@ -1,9 +1,9 @@
 import passport from 'passport'
 import passportLocal from 'passport-local'
 import passportFacebook from 'passport-facebook'
+import bcrypt from 'bcrypt'
 
 import User from '../models/User'
-import { validPassword } from '../helpers/password'
 
 const LocalStrategy = passportLocal.Strategy
 const FacebookStrategy = passportFacebook.Strategy
@@ -29,7 +29,7 @@ passport.use(
         if (!user) {
           return cb(null, false)
         }
-        const isValid = validPassword(password, user.hash, user.salt)
+        const isValid = bcrypt.compare(password, user.password)
         if (isValid) {
           return cb(null, user)
         } else {

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
+import bcrypt from 'bcrypt'
 
-import { genPassword, validPassword } from '../helpers/password'
 import User from '../models/User'
 import UserService from '../services/user'
 import {
@@ -27,24 +27,13 @@ export const postRegisterUser = async (
       isBan,
       isAdmin,
     } = req.body
-    // const isEmailExist = await UserService.findByEmail(email)
-    // if (isEmailExist) {
-    //   next(new InternalServerError('Email already in use'))
-    // }
-    // const isUsernameExist = await UserService.findByUsername(username)
-    // if (isUsernameExist) {
-    //   next(new InternalServerError('Username already in use'))
-    // }
-    const saltHash = genPassword(password)
-    const salt = saltHash.salt
-    const hash = saltHash.hash
+    const hashedPassword = await bcrypt.hash(password, 10)
     const user = new User({
       username,
       firstName,
       lastName,
-      hash: hash,
-      salt: salt,
       email,
+      password: hashedPassword,
       isAdmin,
       isBan,
     })
@@ -68,7 +57,7 @@ export const postLoginUser = async (
     const { username, password } = req.body
     const user = await UserService.findByUsername(username)
     if (user) {
-      const isPasswordMatch = validPassword(password, user.hash, user.salt)
+      const isPasswordMatch = bcrypt.compare(password, user.password)
       if (isPasswordMatch) {
         res.status(200).send('Successfully logged in')
       } else {
@@ -113,12 +102,9 @@ export const updateUserPassword = async (
     const userId = req.params.userId
     const user = await User.findById(userId).exec()
     if (user) {
-      const isPasswordMatch = validPassword(oldPassword, user.hash, user.salt)
+      const isPasswordMatch = bcrypt.compare(oldPassword, user.password)
       if (isPasswordMatch) {
-        const newSaltHash = genPassword(newPassword)
-        const newSalt = newSaltHash.salt
-        const newHash = newSaltHash.hash
-        await UserService.updatePassword(userId, newSalt, newHash)
+        await UserService.updatePassword(userId, newPassword)
         res.status(204).end()
       } else {
         throw new Error('The old password you have entered is incorrect')

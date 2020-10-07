@@ -6,8 +6,7 @@ export type UserDocument = Document & {
   firstName: string;
   lastName: string;
   email: string;
-  hash: string;
-  salt: string;
+  password: string;
   isAdmin: boolean;
   isBan: boolean;
   itemsInCart: ProductDocument[];
@@ -24,13 +23,11 @@ const userSchema = new mongoose.Schema({
   lastName: {
     type: String,
   },
-  hash: {
-    type: String,
-  },
-  salt: {
-    type: String,
-  },
   email: {
+    type: String,
+    required: true,
+  },
+  password: {
     type: String,
     required: true,
   },

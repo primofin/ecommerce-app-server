@@ -1,7 +1,6 @@
 import request from 'supertest'
 
 import { UserDocument } from '../../src/models/User'
-import { validPassword } from '../../src/helpers/password'
 import app from '../../src/app'
 import * as dbHelper from '../db-helper'
 

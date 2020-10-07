@@ -1,3 +1,5 @@
+import bcrypt from 'bcrypt'
+
 import User, { UserDocument } from '../models/User'
 
 async function create(user: UserDocument): Promise<UserDocument> {
@@ -59,18 +61,14 @@ async function update(
  */
 async function updatePassword(
   userId: string,
-  newSalt: string,
-  newHash: string
+  newPassword: string
 ): Promise<UserDocument> {
   const user = await User.findById(userId).exec()
   if (!user) {
     throw new Error(`User ${userId} not found`)
   }
-  if (newSalt) {
-    user.salt = newSalt
-  }
-  if (newHash) {
-    user.hash = newHash
+  if (newPassword) {
+    user.password = await bcrypt.hash(newPassword, 10)
   }
   return user.save()
 }
