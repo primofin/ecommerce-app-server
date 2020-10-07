@@ -122,6 +122,6 @@ export const updateProduct = async (
     const updatedProduct = await ProductService.update(productId, update)
     res.json(updatedProduct)
   } catch (error) {
-    next(new NotFoundError('Movie not found', error))
+    next(new NotFoundError('Product not found', error))
   }
 }

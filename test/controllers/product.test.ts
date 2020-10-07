@@ -4,7 +4,7 @@ import { ProductDocument } from '../../src/models/Product'
 import app from '../../src/app'
 import * as dbHelper from '../db-helper'
 
-const nonExistingMovieId = '5e57b77b5744fa0b461c7906'
+const nonExistingProductId = '5e57b77b5744fa0b461c7906'
 
 async function createProduct(override?: Partial<ProductDocument>) {
   let product = {
@@ -63,7 +63,7 @@ describe('product controller', () => {
   })
 
   it('should not get back a non-existing product', async () => {
-    const res = await request(app).get(`/api/v1/products/${nonExistingMovieId}`)
+    const res = await request(app).get(`/api/v1/products/${nonExistingProductId}`)
     expect(res.status).toBe(404)
   })
   it('should get back all products', async () => {
@@ -95,7 +95,21 @@ describe('product controller', () => {
     expect(res.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          variants: variants
+          variants: variants,
+        }),
+      ])
+    )
+  })
+
+  it('It should get back a product by category', async () => {
+    let res = await createProduct()
+    expect(res.status).toBe(200)
+    const category = res.body.category
+    res = await request(app).get(`/api/v1/products/findByCategory/${category}`)
+    expect(res.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          category: category,
         }),
       ])
     )
@@ -104,18 +118,24 @@ describe('product controller', () => {
   it('should update an existing product', async () => {
     let res = await createProduct()
     expect(res.status).toBe(200)
-
     const productId = res.body._id
     const update = {
       name: 'Basic tee',
       variants: ['cottons'],
     }
-
     res = await request(app).put(`/api/v1/products/${productId}`).send(update)
-
     expect(res.status).toEqual(200)
     expect(res.body.name).toEqual('Basic tee')
     expect(res.body.variants).toEqual(['cottons'])
+  })
+
+  it('should not update a non-existing product', async () => {
+    const update = {
+      name: 'Basic tee',
+      variants: ['cottons'],
+    }
+    const res = await request(app).put(`/api/v1/products/${nonExistingProductId}`).send(update)
+    expect(res.status).toEqual(404)
   })
 
   it('should delete an existing product', async () => {
