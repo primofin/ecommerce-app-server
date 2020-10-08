@@ -8,11 +8,11 @@ const nonExistingUserId = '5e57b77b5744fa0b461c7906'
 
 async function registerUser(override?: Partial<UserDocument>) {
   let user = {
-    username: 'abcd',
+    username: 'dummyusername',
     firstName: 'Alex',
     lastName: 'Mitchel',
     email: 'user1@gmail.com',
-    password: '1234',
+    password: '1234aaaa',
   }
   if (override) {
     user = { ...user, ...override }
@@ -23,11 +23,11 @@ async function registerUser(override?: Partial<UserDocument>) {
 
 async function login(override?: Partial<UserDocument>) {
   let user = {
-    username: 'abcd',
+    username: 'dummyusername',
     firstName: 'Alex',
     lastName: 'Mitchel',
     email: 'user1@gmail.com',
-    password: '1234',
+    password: '1234aaaa',
   }
   if (override) {
     user = { ...user, ...override }
@@ -54,7 +54,7 @@ describe('user controller', () => {
     const res = await registerUser()
     expect(res.status).toBe(200)
     expect(res.body).toHaveProperty('_id')
-    expect(res.body.username).toBe('abcd')
+    expect(res.body.username).toBe('dummyusername')
   })
   it('It should not create a user with wrong data', async () => {
     const res = await request(app).post('/api/v1/auth/register').send({

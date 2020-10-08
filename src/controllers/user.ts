@@ -27,6 +27,14 @@ export const postRegisterUser = async (
       isBan,
       isAdmin,
     } = req.body
+    const isEmailExist = await UserService.findByEmail(email)
+    // throw error when email already registered
+    if (isEmailExist)
+      return res.status(400).json({ error: 'Email already exists' })
+    const isUsernamelExist = await UserService.findByUsername(username)
+    // throw error when email already registered
+    if (isUsernamelExist)
+      return res.status(400).json({ error: 'Username already exists' })
     const hashedPassword = await bcrypt.hash(password, 10)
     const user = new User({
       username,

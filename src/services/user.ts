@@ -6,11 +6,8 @@ async function create(user: UserDocument): Promise<UserDocument> {
   return await user.save()
 }
 
-async function findByEmail(email: string): Promise<UserDocument> {
+async function findByEmail(email: string): Promise<UserDocument | null> {
   const user = await User.findOne({ email: email }).exec()
-  if (!user) {
-    throw new Error(`User with email: ${email} not found`)
-  }
   return user
 }
 /**
@@ -18,11 +15,8 @@ async function findByEmail(email: string): Promise<UserDocument> {
  *
  * -This function find user that has the match username and return that user
  */
-async function findByUsername(username: string): Promise<UserDocument> {
+async function findByUsername(username: string): Promise<UserDocument | null> {
   const user = await User.findOne({ username: username }).exec()
-  if (!user) {
-    throw new Error(`User ${username} not found`)
-  }
   return user
 }
 

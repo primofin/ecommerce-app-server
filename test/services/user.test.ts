@@ -6,11 +6,11 @@ const nonExistingUserId = '5e57b77b5744fa0b461c7906'
 
 async function createUser() {
   const user = new User({
-    username: 'abc',
+    username: 'dummyusername',
     email: 'abc@gmail.com',
     firstName: 'abc',
     lastName: 'xyz',
-    password: 'abcd'
+    password: 'dummypass'
   })
   return await UserService.create(user)
 }
