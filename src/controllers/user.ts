@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 import User from '../models/User'
 import UserService from '../services/user'
@@ -27,15 +28,20 @@ export const postRegisterUser = async (
       isBan,
       isAdmin,
     } = req.body
+    /**
+     * Checking if username or email already exists
+     */
     const isEmailExist = await UserService.findByEmail(email)
     // throw error when email already registered
     if (isEmailExist)
       return res.status(400).json({ error: 'Email already exists' })
     const isUsernamelExist = await UserService.findByUsername(username)
-    // throw error when email already registered
+    // throw error when username already registered
     if (isUsernamelExist)
       return res.status(400).json({ error: 'Username already exists' })
-    const hashedPassword = await bcrypt.hash(password, 10)
+    // hash password using bcrypt library
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(password, salt)
     const user = new User({
       username,
       firstName,
@@ -65,12 +71,19 @@ export const postLoginUser = async (
     const { username, password } = req.body
     const user = await UserService.findByUsername(username)
     if (user) {
-      const isPasswordMatch = bcrypt.compare(password, user.password)
-      if (isPasswordMatch) {
-        res.status(200).send('Successfully logged in')
-      } else {
-        next(new BadRequestError('Password is incorrect'))
-      }
+      const isPasswordMatch = await bcrypt.compare(password, user.password)
+      if (!isPasswordMatch)
+        return next(new BadRequestError('Password is incorrect'))
+      //generate token
+      const token = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_SECRET as jwt.Secret,
+        {
+          expiresIn: 3600, // expires in 1 hour
+        }
+      )
+      res.header('Authorization', token)
+      res.status(200).send('Successfully logged in')
     } else {
       next(new NotFoundError('Username is not exist'))
     }

@@ -1,4 +1,6 @@
 import express from 'express'
+import { checkPermission } from '../middlewares/checkPermission'
+import { verifyToken } from '../middlewares/verifyToken'
 
 import {
   createProduct,
@@ -19,8 +21,12 @@ router.get('/:productId', findById)
 router.get('/findByName/:productName', findByName)
 router.get('/findByCategory/:productCategory', findByCategory)
 router.get('/findByVariant/:productVariants', findByVariant)
-router.put('/:productId', updateProduct)
 router.delete('/:productId', deleteProduct)
-router.post('/', createProduct)
+
+/******************************************
+ * ------------ROLE: ADMIN------------------
+ *******************************************/
+router.post('/',[verifyToken,checkPermission], createProduct)
+router.put('/:productId',[verifyToken,checkPermission], updateProduct)
 
 export default router

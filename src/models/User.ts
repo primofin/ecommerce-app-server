@@ -1,4 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose'
+import validator from 'validator'
+
 import { ProductDocument } from './Product'
 
 export type UserDocument = Document & {
@@ -30,6 +32,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     minlength: 6,
     maxlength: 255,
+    validate: {
+      validator: (email: string) => validator.isEmail(email),
+      message: '{VALUE} is not a valid email'
+    }
   },
   password: {
     type: String,

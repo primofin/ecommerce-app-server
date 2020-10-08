@@ -10,7 +10,7 @@ async function createUser() {
     email: 'abc@gmail.com',
     firstName: 'abc',
     lastName: 'xyz',
-    password: 'dummypass'
+    password: 'dummypass',
   })
   return await UserService.create(user)
 }
@@ -27,53 +27,57 @@ describe('user service', () => {
   afterAll(async () => {
     await dbHelper.closeDatabase()
   })
-  it('It should create a user', async ()=>{
+  it('It should create a user', async () => {
     const user = await createUser()
     expect(user).toHaveProperty('_id')
     expect(user).toHaveProperty('username')
     expect(user).toHaveProperty('email')
     expect(user).toHaveProperty('firstName')
     expect(user).toHaveProperty('password')
-
   })
-  
+
   it('It should get a user with email', async () => {
     const user = await createUser()
     const found = await UserService.findByEmail(user.email)
-    expect(found.email).toEqual(user.email)
-    expect(found._id).toEqual(user._id)
+    if (found) {
+      expect(found.email).toEqual(user.email)
+      expect(found._id).toEqual(user._id)
+    }
   })
 
   it('It should get a user with username', async () => {
     const user = await createUser()
     const found = await UserService.findByUsername(user.username)
-    expect(found.username).toEqual(user.username)
-    expect(found._id).toEqual(user._id)
-  }) 
-
+    if (found) {
+      expect(found.username).toEqual(user.username)
+      expect(found._id).toEqual(user._id)
+    }
+  })
 
   it('It should get a user with id', async () => {
     const user = await createUser()
     const found = await UserService.findById(user._id)
-    expect(found.username).toEqual(user.username)
-    expect(found._id).toEqual(user._id)
-  }) 
+    if (found) {
+      expect(found.username).toEqual(user.username)
+      expect(found._id).toEqual(user._id)
+    }
+  })
 
   it('should not get a non-existing user', async () => {
     expect.assertions(1)
-    return UserService.findById(nonExistingUserId).catch(e => {
+    return UserService.findById(nonExistingUserId).catch((e) => {
       expect(e.message).toMatch(`User ${nonExistingUserId} not found`)
     })
   })
 
-  it('It should update a user', async() => {
+  it('It should update a user', async () => {
     const user = await createUser()
     const update = {
       firstName: 'newFirstName',
       lastName: 'lastName',
-      email: 'asdf@gmail.com'
+      email: 'asdf@gmail.com',
     }
-    const updated = await UserService.update(user._id,update)
+    const updated = await UserService.update(user._id, update)
     expect(updated.firstName).toEqual('newFirstName')
     expect(updated.lastName).toEqual('lastName')
     expect(updated.email).toEqual('asdf@gmail.com')
@@ -84,9 +88,9 @@ describe('user service', () => {
     const update = {
       firstName: 'newFirstName',
       lastName: 'lastName',
-      email: 'asdf@gmail.com'
+      email: 'asdf@gmail.com',
     }
-    return UserService.update(nonExistingUserId, update).catch(e => {
+    return UserService.update(nonExistingUserId, update).catch((e) => {
       expect(e.message).toMatch(`User ${nonExistingUserId} not found`)
     })
   })

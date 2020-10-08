@@ -27,6 +27,7 @@ async function findById(userId: string): Promise<UserDocument> {
   }
   return user
 }
+
 /**
  * Update user profile ( firsName, lastName, email )
  */
