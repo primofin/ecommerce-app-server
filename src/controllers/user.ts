@@ -145,7 +145,6 @@ export const deleteUser = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.params)
     await UserService.deleteUser(req.params.userId)
     res.status(204).end()
   } catch (error) {

@@ -2,11 +2,14 @@ import request from 'supertest'
 
 import { ProductDocument } from '../../src/models/Product'
 import app from '../../src/app'
+import { login } from './user.test'
 import * as dbHelper from '../db-helper'
 
 const nonExistingProductId = '5e57b77b5744fa0b461c7906'
 
 async function createProduct(override?: Partial<ProductDocument>) {
+  const res = await login()
+  const headerToken = res.header.authorization
   let product = {
     name: 'Dreamer Tee',
     description: 'Very comfortable',
@@ -17,7 +20,10 @@ async function createProduct(override?: Partial<ProductDocument>) {
   if (override) {
     product = { ...product, ...override }
   }
-  return await request(app).post('/api/v1/products').send(product)
+  return await request(app)
+    .post('/api/v1/products')
+    .set({ Authorization: headerToken, Accept: 'application/json' })
+    .send(product)
 }
 
 describe('product controller', () => {
@@ -41,6 +47,8 @@ describe('product controller', () => {
   })
 
   it('should not create a product with wrong data', async () => {
+    const loginRes = await login()
+    const headerToken = loginRes.header.authorization
     const res = await request(app)
       .post('/api/v1/products')
       .send({
@@ -50,6 +58,7 @@ describe('product controller', () => {
         variants: ['red', 'leather'],
         sizes: ['large', 'medium', 'small'],
       })
+      .set({ Authorization: headerToken, Accept: 'application/json' })
     expect(res.status).toBe(400)
   })
   it('should get back an existing product by productId', async () => {
@@ -63,7 +72,9 @@ describe('product controller', () => {
   })
 
   it('should not get back a non-existing product', async () => {
-    const res = await request(app).get(`/api/v1/products/${nonExistingProductId}`)
+    const res = await request(app).get(
+      `/api/v1/products/${nonExistingProductId}`
+    )
     expect(res.status).toBe(404)
   })
   it('should get back all products', async () => {
@@ -116,6 +127,8 @@ describe('product controller', () => {
   })
 
   it('should update an existing product', async () => {
+    const loginRes = await login()
+    const headerToken = loginRes.header.authorization
     let res = await createProduct()
     expect(res.status).toBe(200)
     const productId = res.body._id
@@ -123,18 +136,26 @@ describe('product controller', () => {
       name: 'Basic tee',
       variants: ['cottons'],
     }
-    res = await request(app).put(`/api/v1/products/${productId}`).send(update)
+    res = await request(app)
+      .put(`/api/v1/products/${productId}`)
+      .set({ Authorization: headerToken, Accept: 'application/json' })
+      .send(update)
     expect(res.status).toEqual(200)
     expect(res.body.name).toEqual('Basic tee')
     expect(res.body.variants).toEqual(['cottons'])
   })
 
   it('should not update a non-existing product', async () => {
+    const loginRes = await login()
+    const headerToken = loginRes.header.authorization
     const update = {
       name: 'Basic tee',
       variants: ['cottons'],
     }
-    const res = await request(app).put(`/api/v1/products/${nonExistingProductId}`).send(update)
+    const res = await request(app)
+      .put(`/api/v1/products/${nonExistingProductId}`)
+      .set({ Authorization: headerToken, Accept: 'application/json' })
+      .send(update)
     expect(res.status).toEqual(404)
   })
 

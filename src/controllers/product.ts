@@ -16,7 +16,6 @@ export const createProduct = async (
 ) => {
   try {
     const { name, description, category, variants, sizes } = req.body
-    console.log(req.body)
     const product = new Product({
       name,
       description,

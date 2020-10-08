@@ -6,13 +6,14 @@ import * as dbHelper from '../db-helper'
 
 const nonExistingUserId = '5e57b77b5744fa0b461c7906'
 
-async function registerUser(override?: Partial<UserDocument>) {
+export async function registerUser(override?: Partial<UserDocument>) {
   let user = {
     username: 'dummyusername',
     firstName: 'Alex',
     lastName: 'Mitchel',
     email: 'user1@gmail.com',
     password: '1234aaaa',
+    isAdmin: true,
   }
   if (override) {
     user = { ...user, ...override }
@@ -21,13 +22,14 @@ async function registerUser(override?: Partial<UserDocument>) {
   return res
 }
 
-async function login(override?: Partial<UserDocument>) {
+export async function login(override?: Partial<UserDocument>) {
   let user = {
     username: 'dummyusername',
     firstName: 'Alex',
     lastName: 'Mitchel',
     email: 'user1@gmail.com',
     password: '1234aaaa',
+    isAdmin: true,
   }
   if (override) {
     user = { ...user, ...override }
