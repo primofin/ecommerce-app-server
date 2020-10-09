@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { postRegisterUser, postLoginUser } from '../controllers/user'
+import { postRegisterUser, postLoginUser, logout } from '../controllers/user'
 
 const router = express.Router()
 
@@ -9,6 +9,7 @@ const router = express.Router()
  */
 router.post('/register', postRegisterUser)
 router.post('/login', postLoginUser)
+router.post('/logout', logout)
 router.post('/emai-activate', postLoginUser)
 
 export default router

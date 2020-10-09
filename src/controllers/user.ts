@@ -92,6 +92,19 @@ export const postLoginUser = async (
   }
 }
 
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.header('Authorization', undefined)
+    res.status(200).send('Successfully logged out')
+  } catch (error) {
+    next(new InternalServerError('Internal Server Error', error))
+  }
+}
+
 /**
  *  PATCH /users/:userId
  */
