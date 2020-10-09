@@ -42,6 +42,19 @@ export const postRegisterUser = async (
     // hash password using bcrypt library
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
+    /**
+     * Three parameters are required when register:
+     * username, password, email
+     */
+    if (!username) {
+      res.status(400).json({ error: 'Username is missing!' })
+    }
+    if (!password) {
+      res.status(400).json({ error: 'Password is missing!' })
+    }
+    if (!email) {
+      res.status(400).json({ error: 'Email is missing!' })
+    }
     const user = new User({
       username,
       firstName,
@@ -99,7 +112,8 @@ export const logout = async (
 ) => {
   try {
     res.header('Authorization', undefined)
-    res.status(200).send('Successfully logged out')
+    req.logout()
+    res.redirect('/')
   } catch (error) {
     next(new InternalServerError('Internal Server Error', error))
   }

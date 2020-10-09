@@ -3,12 +3,20 @@ import validator from 'validator'
 
 import { ProductDocument } from './Product'
 
+export type Google = {
+  id: string;
+  token: string;
+  email: string;
+  name: string;
+}
 export type UserDocument = Document & {
   username: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
+  avatar: string;
+  google: Google;
   isAdmin: boolean;
   isBan: boolean;
   itemsInCart: ProductDocument[];
@@ -17,7 +25,6 @@ export type UserDocument = Document & {
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true,
     minlength: 6,
     maxlength: 255,
   },
@@ -29,19 +36,24 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
     minlength: 6,
     maxlength: 255,
     validate: {
       validator: (email: string) => validator.isEmail(email),
-      message: '{VALUE} is not a valid email'
-    }
+      message: '{VALUE} is not a valid email',
+    },
   },
   password: {
     type: String,
-    required: true,
     minlength: 6,
     maxlength: 1024,
+  },
+  avatar: {
+    type: String
+  },
+  google: {
+    id: String,
+    name: String,
   },
   isAdmin: {
     type: Boolean,

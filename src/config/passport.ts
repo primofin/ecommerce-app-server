@@ -1,12 +1,10 @@
 import passport from 'passport'
-import passportLocal from 'passport-local'
-import passportFacebook from 'passport-facebook'
-import bcrypt from 'bcrypt'
+import passportGoogle from 'passport-google-oauth20'
 
 import User from '../models/User'
+import { GOOGLE_ID, GOOGLE_SECRET } from '../util/secrets'
 
-const LocalStrategy = passportLocal.Strategy
-const FacebookStrategy = passportFacebook.Strategy
+const GoogleStrategy = passportGoogle.Strategy
 
 passport.serializeUser<any, any>((user, done) => {
   done(undefined, user.id)
@@ -18,27 +16,55 @@ passport.deserializeUser((id, done) => {
   })
 })
 
+/**
+ *
+ * --------------Authenticate using GOOGLE service----------------
+ *
+ **/
 passport.use(
-  new LocalStrategy({ usernameField: 'username' }, function (
-    username,
-    password,
-    cb
-  ) {
-    User.findOne({ username: username })
-      .then((user) => {
-        if (!user) {
-          return cb(null, false)
-        }
-        const isValid = bcrypt.compare(password, user.password)
-        if (isValid) {
-          return cb(null, user)
+  new GoogleStrategy(
+    {
+      clientID: GOOGLE_ID,
+      clientSecret: GOOGLE_SECRET,
+      callbackURL: '/api/v1/auth/google/redirect',
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // passport callback function
+      //check if user already exists in our db with the given profile ID
+      let gAvatar = ''
+      if (profile.photos) {
+        gAvatar = profile.photos[0].value
+      }
+      let email = ''
+      if (profile.emails) {
+        email = profile.emails[0].value
+      }
+      User.findOne({
+        $or: [
+          { 'google.id': profile.id },
+          {
+            email: email,
+          },
+        ],
+      }).then((user) => {
+        if (user) {
+          //if we already have a record with the given profile ID
+          done(undefined, user)
         } else {
-          return cb(null, false)
+          const newUser = new User({
+            avatar: gAvatar,
+            google: {
+              id: profile.id,
+              name: profile.displayName,
+            },
+          })
+          newUser.save().then((newUser) => {
+            done(undefined, newUser)
+          })
         }
       })
-      .catch((err) => {
-        cb(err)
-      })
-  })
+    }
+  )
 )
+
 export default passport
