@@ -53,6 +53,7 @@ passport.use(
         } else {
           const newUser = new User({
             avatar: gAvatar,
+            email: email,
             google: {
               id: profile.id,
               name: profile.displayName,

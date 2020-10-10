@@ -14,6 +14,9 @@ router.post('/login', postLoginUser)
 router.get('/logout', logout)
 router.post('/emai-activate', postLoginUser)
 
+router.get('/profile', (req, res) => {
+  res.send('Profile')
+})
 /**
  *
  * --------------GET ROUTES----------------
@@ -26,7 +29,8 @@ router.get(
   })
 )
 router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-  res.send(req.user)
+  res.redirect('/api/v1/auth/profile')
+  // res.send(req.user)
 })
 
 export default router

@@ -47,13 +47,13 @@ export const postRegisterUser = async (
      * username, password, email
      */
     if (!username) {
-      res.status(400).json({ error: 'Username is missing!' })
+      return res.status(400).json({ error: 'Username is missing!' })
     }
     if (!password) {
-      res.status(400).json({ error: 'Password is missing!' })
+      return res.status(400).json({ error: 'Password is missing!' })
     }
     if (!email) {
-      res.status(400).json({ error: 'Email is missing!' })
+      return res.status(400).json({ error: 'Email is missing!' })
     }
     const user = new User({
       username,

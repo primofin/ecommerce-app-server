@@ -6,7 +6,6 @@ import { ProductDocument } from './Product'
 export type Google = {
   id: string;
   token: string;
-  email: string;
   name: string;
 }
 export type UserDocument = Document & {
