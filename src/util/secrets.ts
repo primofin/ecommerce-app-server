@@ -14,10 +14,14 @@ export const ENVIRONMENT = process.env.NODE_ENV
 const prod = ENVIRONMENT === 'production' // Anything else is treated as 'dev'
 
 export const SESSION_SECRET = process.env['SESSION_SECRET'] as string
-export const JWT_SECRET = process.env['SESSION_SECRET'] as string
+export const JWT_SECRET = process.env['JWT_SECRET'] as string
 
 export const GOOGLE_ID = process.env['GOOGLE_ID'] as string
 export const GOOGLE_SECRET = process.env['GOOGLE_SECRET'] as string
+
+// SendGrid
+export const SENDGRID_API_KEY = process.env['SENDGRID_API_KEY'] as string
+export const FROM_EMAIL = process.env['FROM_EMAIL'] as string
 
 export const MONGODB_URI = (prod
   ? process.env['MONGODB_URI']

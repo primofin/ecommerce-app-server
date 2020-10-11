@@ -28,6 +28,20 @@ async function findById(userId: string): Promise<UserDocument> {
   return user
 }
 
+async function resetPassword(
+  userId: string,
+  password: string
+): Promise<UserDocument> {
+  const user = await User.findById(userId).exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  if (password) {
+    user.password = password
+  }
+  return user.save()
+}
+
 /**
  * Update user profile ( firsName, lastName, email )
  */
@@ -80,4 +94,5 @@ export default {
   update,
   deleteUser,
   updatePassword,
+  resetPassword,
 }

@@ -84,4 +84,14 @@ app.use('/api/v1/users', userRouter)
 // Custom API error handler
 app.use(apiErrorHandler)
 
+app.get('/authrequired', (req, res) => {
+  console.log('Inside GET /authrequired callback')
+  console.log(`User authenticated? ${req.isAuthenticated()}`)
+  if (req.isAuthenticated()) {
+    res.send('you hit the authentication endpoint\n')
+  } else {
+    res.redirect('/')
+  }
+})
+
 export default app

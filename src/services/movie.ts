@@ -6,7 +6,6 @@ function create(movie: MovieDocument): Promise<MovieDocument> {
 
 async function findById(movieId: string): Promise<MovieDocument> {
   const movie = await Movie.findById(movieId).exec() // .exec() will return a true Promise
-
   if (!movie) {
     throw new Error(`Movie ${movieId} not found`)
   }

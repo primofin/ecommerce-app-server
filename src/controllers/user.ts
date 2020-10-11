@@ -4,6 +4,8 @@ import jwt from 'jsonwebtoken'
 
 import User from '../models/User'
 import UserService from '../services/user'
+import { JWT_SECRET } from '../util/secrets'
+
 import {
   NotFoundError,
   BadRequestError,
@@ -29,6 +31,19 @@ export const postRegisterUser = async (
       isAdmin,
     } = req.body
     /**
+     * Three parameters are required when register:
+     * username, password, email
+     */
+    if (!username) {
+      return res.status(400).json({ error: 'Username is missing!' })
+    }
+    if (!password) {
+      return res.status(400).json({ error: 'Password is missing!' })
+    }
+    if (!email) {
+      return res.status(400).json({ error: 'Email is missing!' })
+    }
+    /**
      * Checking if username or email already exists
      */
     const isEmailExist = await UserService.findByEmail(email)
@@ -42,19 +57,6 @@ export const postRegisterUser = async (
     // hash password using bcrypt library
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
-    /**
-     * Three parameters are required when register:
-     * username, password, email
-     */
-    if (!username) {
-      return res.status(400).json({ error: 'Username is missing!' })
-    }
-    if (!password) {
-      return res.status(400).json({ error: 'Password is missing!' })
-    }
-    if (!email) {
-      return res.status(400).json({ error: 'Email is missing!' })
-    }
     const user = new User({
       username,
       firstName,
@@ -88,13 +90,9 @@ export const postLoginUser = async (
       if (!isPasswordMatch)
         return next(new BadRequestError('Password is incorrect'))
       //generate token
-      const token = jwt.sign(
-        { userId: user._id },
-        process.env.JWT_SECRET as jwt.Secret,
-        {
-          expiresIn: 3600, // expires in 1 hour
-        }
-      )
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+        expiresIn: 3600, // expires in 1 hour
+      })
       res.header('Authorization', token)
       res.status(200).send('Successfully logged in')
     } else {

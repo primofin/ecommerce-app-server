@@ -48,11 +48,20 @@ const userSchema = new mongoose.Schema({
     maxlength: 1024,
   },
   avatar: {
-    type: String
+    type: String,
   },
   google: {
     id: String,
     name: String,
+  },
+  resetPasswordToken: {
+    type: String,
+    required: false,
+  },
+
+  resetPasswordExpires: {
+    type: Date,
+    required: false,
   },
   isAdmin: {
     type: Boolean,
