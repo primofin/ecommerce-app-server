@@ -12,6 +12,8 @@ async function createProduct(override?: Partial<ProductDocument>) {
   const headerToken = res.header.authorization
   let product = {
     name: 'Dreamer Tee',
+    price: 234,
+    images: ['https://i.ibb.co/BqVTKMj/Ray.jpg'],
     description: 'Very comfortable',
     category: 'clothing',
     variants: ['red', 'leather'],

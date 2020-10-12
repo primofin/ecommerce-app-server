@@ -4,6 +4,7 @@ import { UserDocument } from './User'
 
 export type ProductDocument = Document & {
   name: string;
+  price: number;
   description: string;
   category: string;
   variants: string[];
@@ -14,6 +15,14 @@ export type ProductDocument = Document & {
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  images: {
+    type: [String],
     required: true,
   },
   description: {

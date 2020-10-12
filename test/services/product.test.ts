@@ -7,6 +7,8 @@ const nonExistingProductId = '5e57b77b5744fa0b461c7906'
 async function createProduct() {
   const product = new Product({
     name: 'Dreamer Tee',
+    price: 123,
+    images: ['https://i.ibb.co/BqVTKMj/Ray.jpg'],
     description: 'Very comfortable',
     category: 'clothing',
     variants: ['red','leather'],
@@ -31,6 +33,8 @@ describe('product service', () => {
   it('should create a product', async () => {
     const product = await createProduct()
     expect(product).toHaveProperty('_id')
+    expect(product).toHaveProperty('price')
+    expect(product).toHaveProperty('images')
     expect(product).toHaveProperty('name')
     expect(product).toHaveProperty('category')
     expect(product).toHaveProperty('sizes')
