@@ -41,6 +41,10 @@ mongoose
     process.exit(1)
   })
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
 // Express configuration
 app.set('port', process.env.PORT || 3000)
 

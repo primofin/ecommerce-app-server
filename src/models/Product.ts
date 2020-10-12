@@ -5,6 +5,7 @@ import { UserDocument } from './User'
 export type ProductDocument = Document & {
   name: string;
   price: number;
+  images: string[];
   description: string;
   category: string;
   variants: string[];
