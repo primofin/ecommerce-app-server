@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
-import User from '../models/User'
 import UserService from '../services/user'
 import { InternalServerError } from '../helpers/apiError'
 import { JWT_SECRET } from '../util/secrets'

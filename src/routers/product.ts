@@ -11,6 +11,8 @@ import {
   findByVariant,
   deleteProduct,
   updateProduct,
+  orderProduct,
+  unorderProduct,
 } from '../controllers/product'
 
 const router = express.Router()
@@ -21,12 +23,15 @@ router.get('/:productId', findById)
 router.get('/findByName/:productName', findByName)
 router.get('/findByCategory/:productCategory', findByCategory)
 router.get('/findByVariant/:productVariants', findByVariant)
+router.put('/order/:productId', orderProduct)
+router.put('/unorder/:productId', unorderProduct)
 router.delete('/:productId', deleteProduct)
 
 /******************************************
  * ------------ROLE: ADMIN------------------
  *******************************************/
-router.post('/',[verifyToken,checkPermission], createProduct)
-router.put('/:productId',[verifyToken,checkPermission], updateProduct)
+router.post('/', [verifyToken, checkPermission], createProduct)
+router.put('/:productId', [verifyToken, checkPermission], updateProduct)
+router.put('/order/:productId', orderProduct)
 
 export default router

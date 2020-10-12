@@ -1,4 +1,5 @@
 import Product, { ProductDocument } from '../models/Product'
+import User from '../models/User'
 
 function create(product: ProductDocument): Promise<ProductDocument> {
   return product.save()
@@ -37,9 +38,7 @@ async function findByCategory(
   return product
 }
 // find product by Variants
-async function findByVariant(
-  variant: string
-): Promise<ProductDocument[]> {
+async function findByVariant(variant: string): Promise<ProductDocument[]> {
   const product = await Product.find({ variants: variant }).exec()
   if (!product) {
     throw new Error(`Product with ${variant} not found`)
@@ -76,6 +75,39 @@ async function update(
   }
   return product.save()
 }
+
+async function orderProduct(
+  userId: string,
+  productId: string
+): Promise<ProductDocument> {
+  const user = await User.findById(userId).exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  const product = await Product.findById(productId).exec()
+  if (!product) {
+    throw new Error(`Product ${productId} not found`)
+  }
+  product.orderBy = user
+  return product.save()
+}
+
+async function unorderProduct(
+  userId: string,
+  productId: string
+): Promise<ProductDocument> {
+  const user = await User.findById(userId).exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  const product = await Product.findById(productId).exec()
+  if (!product) {
+    throw new Error(`Product ${productId} not found`)
+  }
+  product.orderBy = null
+  return product.save()
+}
+
 export default {
   create,
   findById,
@@ -85,4 +117,6 @@ export default {
   findByVariant,
   deleteProduct,
   update,
+  orderProduct,
+  unorderProduct,
 }

@@ -1,4 +1,6 @@
-import mongoose, { Document } from 'mongoose'
+import mongoose, { Document, Schema } from 'mongoose'
+
+import { UserDocument } from './User'
 
 export type ProductDocument = Document & {
   name: string;
@@ -6,6 +8,7 @@ export type ProductDocument = Document & {
   category: string;
   variants: string[];
   sizes: string[] | number[];
+  orderBy: UserDocument | null;
 }
 
 const productSchema = new mongoose.Schema({
@@ -26,6 +29,10 @@ const productSchema = new mongoose.Schema({
   sizes: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
+  },
+  orderBy: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
 })
 

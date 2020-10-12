@@ -124,3 +124,40 @@ export const updateProduct = async (
     next(new NotFoundError('Product not found', error))
   }
 }
+
+// UPDATE /products/order/:productId
+export const orderProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.body
+    const productId = req.params.productId
+    const updatedProduct = await ProductService.orderProduct(userId, productId)
+    res.json(updatedProduct)
+  } catch (error) {
+    console.log(error)
+    next(new NotFoundError('Product not found', error))
+  }
+}
+
+// UPDATE /products/unorder/:productId
+export const unorderProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.body
+    const productId = req.params.productId
+    const updatedProduct = await ProductService.unorderProduct(
+      userId,
+      productId
+    )
+    res.json(updatedProduct)
+  } catch (error) {
+    console.log(error)
+    next(new NotFoundError('Product not found', error))
+  }
+}

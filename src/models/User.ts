@@ -58,18 +58,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-
-  resetPasswordExpires: {
-    type: Date,
-    required: false,
-  },
   isAdmin: {
     type: Boolean,
   },
   isBan: {
     type: Boolean,
   },
-  itemInCart: [
+  itemsInCart: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Product',
