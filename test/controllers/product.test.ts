@@ -1,4 +1,5 @@
 import request from 'supertest'
+import cookie from 'cookie'
 
 import { ProductDocument } from '../../src/models/Product'
 import app from '../../src/app'
@@ -9,7 +10,7 @@ const nonExistingProductId = '5e57b77b5744fa0b461c7906'
 
 async function createProduct(override?: Partial<ProductDocument>) {
   const res = await login()
-  const headerToken = res.header.authorization
+  const token = cookie.parse(res.header['set-cookie'][0]).authcookie
   let product = {
     name: 'Dreamer Tee',
     price: 234,
@@ -24,7 +25,7 @@ async function createProduct(override?: Partial<ProductDocument>) {
   }
   return await request(app)
     .post('/api/v1/products')
-    .set({ Authorization: headerToken, Accept: 'application/json' })
+    .set('Cookie', [`authcookie=${token}`])
     .send(product)
 }
 
@@ -50,7 +51,8 @@ describe('product controller', () => {
 
   it('should not create a product with wrong data', async () => {
     const loginRes = await login()
-    const headerToken = loginRes.header.authorization
+    const headerToken = cookie.parse(loginRes.header['set-cookie'][0])
+      .authcookie
     const res = await request(app)
       .post('/api/v1/products')
       .send({
@@ -60,7 +62,7 @@ describe('product controller', () => {
         variants: ['red', 'leather'],
         sizes: ['large', 'medium', 'small'],
       })
-      .set({ Authorization: headerToken, Accept: 'application/json' })
+      .set('Cookie', [`authcookie=${headerToken}`])
     expect(res.status).toBe(400)
   })
   it('should get back an existing product by productId', async () => {
@@ -93,7 +95,6 @@ describe('product controller', () => {
     })
 
     const res3 = await request(app).get('/api/v1/products')
-
     expect(res3.body.length).toEqual(2)
     expect(res3.body[0]._id).toEqual(res1.body._id)
     expect(res3.body[1]._id).toEqual(res2.body._id)
@@ -130,7 +131,8 @@ describe('product controller', () => {
 
   it('should update an existing product', async () => {
     const loginRes = await login()
-    const headerToken = loginRes.header.authorization
+    const headerToken = cookie.parse(loginRes.header['set-cookie'][0])
+      .authcookie
     let res = await createProduct()
     expect(res.status).toBe(200)
     const productId = res.body._id
@@ -140,7 +142,7 @@ describe('product controller', () => {
     }
     res = await request(app)
       .put(`/api/v1/products/${productId}`)
-      .set({ Authorization: headerToken, Accept: 'application/json' })
+      .set('Cookie', [`authcookie=${headerToken}`])
       .send(update)
     expect(res.status).toEqual(200)
     expect(res.body.name).toEqual('Basic tee')
@@ -149,27 +151,24 @@ describe('product controller', () => {
 
   it('should not update a non-existing product', async () => {
     const loginRes = await login()
-    const headerToken = loginRes.header.authorization
+    const headerToken = cookie.parse(loginRes.header['set-cookie'][0])
+      .authcookie
     const update = {
       name: 'Basic tee',
       variants: ['cottons'],
     }
     const res = await request(app)
       .put(`/api/v1/products/${nonExistingProductId}`)
-      .set({ Authorization: headerToken, Accept: 'application/json' })
+      .set('Cookie', [`authcookie=${headerToken}`])
       .send(update)
     expect(res.status).toEqual(404)
   })
-
   it('should delete an existing product', async () => {
     let res = await createProduct()
     expect(res.status).toBe(200)
     const productId = res.body._id
-
     res = await request(app).delete(`/api/v1/products/${productId}`)
-
     expect(res.status).toEqual(204)
-
     res = await request(app).get(`/api/v1/products/${productId}`)
     expect(res.status).toBe(404)
   })

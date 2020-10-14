@@ -147,7 +147,6 @@ export const orderProduct = async (
     const updatedProduct = await ProductService.orderProduct(userId, productId)
     res.json(updatedProduct)
   } catch (error) {
-    console.log(error)
     next(new NotFoundError('Product not found', error))
   }
 }
@@ -167,7 +166,6 @@ export const unorderProduct = async (
     )
     res.json(updatedProduct)
   } catch (error) {
-    console.log(error)
     next(new NotFoundError('Product not found', error))
   }
 }

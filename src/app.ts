@@ -8,6 +8,8 @@ import flash from 'express-flash'
 import path from 'path'
 import mongoose from 'mongoose'
 import bluebird from 'bluebird'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 const MongoStore = mongo(session)
 import passport from './config/passport'
@@ -40,11 +42,14 @@ mongoose
     )
     process.exit(1)
   })
+app.use(cookieParser())
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+    credentials: true,
+  })
+)
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  next()
-})
 // Express configuration
 app.set('port', process.env.PORT || 3000)
 
@@ -70,12 +75,6 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use((req, res, next) => {
-  console.log(req.session)
-  console.log(req.user)
-  next()
-})
-
 // Use movie router
 app.use('/api/v1/movies', movieRouter)
 // Use product router
@@ -84,6 +83,40 @@ app.use('/api/v1/products', productRouter)
 app.use('/api/v1/auth', authRouter)
 // Use user router
 app.use('/api/v1/users', userRouter)
+
+/**
+ * example code how to set and get cookie
+ */
+// //basic route for homepage
+// app.get('/', (req, res) => {
+//   res.send('welcome to express app')
+// })
+
+// //JSON object to be added to cookie
+// const users = {
+//   name: 'Ritik',
+//   Age: '18',
+// }
+
+// //Route for adding cookie
+// app.get('/setuser', (req, res) => {
+//   res.cookie('userData', users)
+//   res.send('user data added to cookie')
+// })
+
+// //Iterate users data from cookie
+// app.get('/getuser', (req, res) => {
+//   //shows all the cookies
+//   console.log(req)
+//   res.send(req.cookies)
+// })
+
+// //Route for destroying cookie
+// app.get('/logout', (req, res) => {
+//   //it will clear the userData cookie
+//   res.clearCookie('userData')
+//   res.send('user logout successfully')
+// })
 
 // Custom API error handler
 app.use(apiErrorHandler)

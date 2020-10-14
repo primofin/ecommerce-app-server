@@ -1,4 +1,5 @@
 import request from 'supertest'
+import cookie from 'cookie'
 
 import { UserDocument } from '../../src/models/User'
 import app from '../../src/app'
@@ -35,7 +36,9 @@ export async function login(override?: Partial<UserDocument>) {
     user = { ...user, ...override }
   }
   await request(app).post('/api/v1/auth/register').send(user)
-  const res = await request(app).post('/api/v1/auth/login').send(user)
+  const res = await request(app)
+    .post('/api/v1/auth/login')
+    .send(user)
   return res
 }
 
@@ -96,15 +99,17 @@ describe('user controller', () => {
     expect(res.status).toEqual(404)
   })
 
-  it('It should update a user\'s password', async () => {
+  it("It should update a user's password", async () => {
     let res = await registerUser()
     expect(res.status).toBe(200)
     const update = {
       oldPassword: '1234',
-      newPassword: '123abc'
+      newPassword: '123abc',
     }
     const userId = res.body._id
-    res = await request(app).patch(`/api/v1/users/change-password/${userId}`).send(update)
+    res = await request(app)
+      .patch(`/api/v1/users/change-password/${userId}`)
+      .send(update)
     expect(res.status).toBe(204)
   })
 
@@ -117,4 +122,3 @@ describe('user controller', () => {
     expect(res.status).toBe(204)
   })
 })
- 

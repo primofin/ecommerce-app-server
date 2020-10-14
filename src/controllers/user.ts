@@ -93,7 +93,14 @@ export const postLoginUser = async (
       const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
         expiresIn: 3600, // expires in 1 hour
       })
-      res.header('Authorization', token)
+      const options = {
+        path: '/',
+        sameSite: true,
+        maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
+        httpOnly: true, // The cookie only accessible by the web server
+      }
+      res.cookie('authcookie', token, options)
+      // res.header('Authorization', token)
       res.status(200).send('Successfully logged in')
     } else {
       next(new NotFoundError('Username is not exist'))
@@ -109,7 +116,7 @@ export const logout = async (
   next: NextFunction
 ) => {
   try {
-    res.header('Authorization', undefined)
+    // res.header('Authorization', undefined)
     req.logout()
     res.redirect('/')
   } catch (error) {
