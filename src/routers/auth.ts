@@ -1,15 +1,24 @@
 import express from 'express'
 
 import passport from '../config/passport'
-import { postRegisterUser, postLoginUser, logout } from '../controllers/user'
+
+import {
+  postRegisterUser,
+  postLoginUser,
+  logout,
+  checkAuthentication,
+} from '../controllers/user'
 import { recover, resetPassword } from '../controllers/userPassword'
+import { verifyToken } from '../middlewares/verifyToken'
 
 const router = express.Router()
+// Every path we define here will get /api/v1/auth prefix
 /**
  *
  * --------------POST ROUTES----------------
  *
  **/
+router.get('/isAuthenticated', verifyToken, checkAuthentication)
 router.post('/register', postRegisterUser)
 router.post('/login', postLoginUser)
 router.get('/logout', logout)

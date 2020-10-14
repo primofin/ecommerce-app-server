@@ -12,8 +12,44 @@ import {
   InternalServerError,
 } from '../helpers/apiError'
 
+type ReqUser = {
+  userId: string;
+  iat: string;
+  exp: string;
+}
+// GET /user/:userId
+export const findById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.json(await UserService.findById(req.params.userId))
+  } catch (error) {
+    next(new NotFoundError('User not found', error))
+  }
+}
 /**
- * POST /users
+ * GET /auth/isAuthenticated
+ */
+
+export const checkAuthentication = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { userId } = req.user as ReqUser
+    if (userId) {
+      return res.json({ isLoggedIn: true, userId: userId })
+    }
+  } catch (error) {
+    next(console.log(error))
+  }
+}
+
+/**
+ * POST /auth/register
  */
 export const postRegisterUser = async (
   req: Request,
@@ -77,6 +113,9 @@ export const postRegisterUser = async (
   }
 }
 
+/**
+ * POST /auth/login
+ */
 export const postLoginUser = async (
   req: Request,
   res: Response,

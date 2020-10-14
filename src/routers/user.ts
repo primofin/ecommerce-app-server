@@ -1,8 +1,17 @@
 import express from 'express'
 
-import { updateUser, deleteUser, updateUserPassword } from '../controllers/user'
+import {
+  findById,
+  updateUser,
+  deleteUser,
+  updateUserPassword,
+} from '../controllers/user'
 
 const router = express.Router()
+/**
+ * --------------GET ROUTES ----------------
+ */
+router.get('/:userId', findById)
 /**
  * --------------DELETE ROUTES ----------------
  */
