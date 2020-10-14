@@ -22,7 +22,7 @@ export const createProduct = async (
       description,
       category,
       variants,
-      sizes,
+      size,
     } = req.body
     const product = new Product({
       name,
@@ -31,7 +31,7 @@ export const createProduct = async (
       description,
       category,
       variants,
-      sizes,
+      size,
     })
     await ProductService.create(product)
     res.json(product)

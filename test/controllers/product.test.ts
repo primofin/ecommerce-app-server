@@ -18,7 +18,8 @@ async function createProduct(override?: Partial<ProductDocument>) {
     description: 'Very comfortable',
     category: 'clothing',
     variants: ['red', 'leather'],
-    sizes: ['large', 'medium', 'small'] as string[] | number[],
+    // sizes: ['large', 'medium', 'small'] as string[] | number[],
+    size: 'large' as string | number,
   }
   if (override) {
     product = { ...product, ...override }
@@ -60,7 +61,7 @@ describe('product controller', () => {
         description: 'Very comfortable',
         // category: 'clothing',
         variants: ['red', 'leather'],
-        sizes: ['large', 'medium', 'small'],
+        size: 'large' as string | number,
       })
       .set('Cookie', [`authcookie=${headerToken}`])
     expect(res.status).toBe(400)
@@ -85,13 +86,13 @@ describe('product controller', () => {
     const res1 = await createProduct({
       name: 'Dreamer Tee 1',
       category: 'clothing',
-      sizes: ['large', 'medium', 'small'],
+      size: 'large' as string | number,
     })
     const res2 = await createProduct({
       name: 'Dreamer Tee 2',
       description: 'Very comfortable',
       category: 'clothing',
-      sizes: ['large', 'medium', 'small'],
+      size: 'large' as string | number,
     })
 
     const res3 = await request(app).get('/api/v1/products')

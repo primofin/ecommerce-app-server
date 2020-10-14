@@ -9,7 +9,8 @@ export type ProductDocument = Document & {
   description: string;
   category: string;
   variants: string[];
-  sizes: string[] | number[];
+  // sizes: string[] | number[];
+  size: string | number;
   orderBy: UserDocument | null;
 }
 
@@ -36,7 +37,11 @@ const productSchema = new mongoose.Schema({
   variants: {
     type: [String],
   },
-  sizes: {
+  // sizes: {
+  //   type: mongoose.Schema.Types.Mixed,
+  //   required: true,
+  // },
+  size: {
     type: mongoose.Schema.Types.Mixed,
     required: true,
   },

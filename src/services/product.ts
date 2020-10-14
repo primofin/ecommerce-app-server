@@ -70,8 +70,8 @@ async function update(
   if (update.variants) {
     product.variants = update.variants
   }
-  if (update.sizes) {
-    product.sizes = update.sizes
+  if (update.size) {
+    product.size = update.size
   }
   return product.save()
 }

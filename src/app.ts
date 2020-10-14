@@ -84,40 +84,6 @@ app.use('/api/v1/auth', authRouter)
 // Use user router
 app.use('/api/v1/users', userRouter)
 
-/**
- * example code how to set and get cookie
- */
-// //basic route for homepage
-// app.get('/', (req, res) => {
-//   res.send('welcome to express app')
-// })
-
-// //JSON object to be added to cookie
-// const users = {
-//   name: 'Ritik',
-//   Age: '18',
-// }
-
-// //Route for adding cookie
-// app.get('/setuser', (req, res) => {
-//   res.cookie('userData', users)
-//   res.send('user data added to cookie')
-// })
-
-// //Iterate users data from cookie
-// app.get('/getuser', (req, res) => {
-//   //shows all the cookies
-//   console.log(req)
-//   res.send(req.cookies)
-// })
-
-// //Route for destroying cookie
-// app.get('/logout', (req, res) => {
-//   //it will clear the userData cookie
-//   res.clearCookie('userData')
-//   res.send('user logout successfully')
-// })
-
 // Custom API error handler
 app.use(apiErrorHandler)
 

@@ -12,7 +12,8 @@ async function createProduct() {
     description: 'Very comfortable',
     category: 'clothing',
     variants: ['red','leather'],
-    sizes: ['large', 'medium', 'small'],
+    // sizes: ['large', 'medium', 'small'],
+    size: 'large' as string | number,
   })
   return await ProductService.create(product)
 }
@@ -37,7 +38,7 @@ describe('product service', () => {
     expect(product).toHaveProperty('images')
     expect(product).toHaveProperty('name')
     expect(product).toHaveProperty('category')
-    expect(product).toHaveProperty('sizes')
+    expect(product).toHaveProperty('size')
   })
 
   it('should get a product with id', async () => {

@@ -101,7 +101,7 @@ export const postLoginUser = async (
       }
       res.cookie('authcookie', token, options)
       // res.header('Authorization', token)
-      res.status(200).send('Successfully logged in')
+      res.json(user)
     } else {
       next(new NotFoundError('Username is not exist'))
     }
@@ -116,9 +116,8 @@ export const logout = async (
   next: NextFunction
 ) => {
   try {
-    // res.header('Authorization', undefined)
-    req.logout()
-    res.redirect('/')
+    res.clearCookie('authcookie')
+    res.status(200).send('Logged out')
   } catch (error) {
     next(new InternalServerError('Internal Server Error', error))
   }
