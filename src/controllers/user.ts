@@ -41,7 +41,8 @@ export const checkAuthentication = async (
   try {
     const { userId } = req.user as ReqUser
     if (userId) {
-      return res.json({ isLoggedIn: true, userId: userId })
+      const user = await UserService.findById(userId)
+      return res.json({ user: user })
     }
   } catch (error) {
     next(console.log(error))

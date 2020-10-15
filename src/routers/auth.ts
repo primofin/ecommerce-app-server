@@ -18,7 +18,6 @@ const router = express.Router()
  * --------------POST ROUTES----------------
  *
  **/
-router.get('/isAuthenticated', verifyToken, checkAuthentication)
 router.post('/register', postRegisterUser)
 router.post('/login', postLoginUser)
 router.get('/logout', logout)
@@ -31,6 +30,7 @@ router.post('/reset-password/:token', resetPassword)
  * --------------GET ROUTES----------------
  *
  **/
+router.get('/isAuthenticated', verifyToken, checkAuthentication)
 router.get(
   '/google',
   passport.authenticate('google', {
