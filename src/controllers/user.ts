@@ -42,7 +42,7 @@ export const checkAuthentication = async (
     const { userId } = req.user as ReqUser
     if (userId) {
       const user = await UserService.findById(userId)
-      return res.json({ user: user })
+      return res.json(user)
     }
   } catch (error) {
     next(console.log(error))
