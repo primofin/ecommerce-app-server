@@ -22,7 +22,7 @@ async function findByUsername(username: string): Promise<UserDocument | null> {
 }
 
 async function findById(userId: string): Promise<UserDocument> {
-  const user = await User.findById(userId).exec()
+  const user = await User.findById(userId).select('-password').exec()
   if (!user) {
     throw new Error(`User ${userId} not found`)
   }
@@ -120,6 +120,16 @@ async function removeProductFromCart(
   return user.save()
 }
 
+async function getUserWithItemsInCart(userId: string): Promise<UserDocument> {
+  const user = await User.findById(userId)
+    .select('-password')
+    .populate('itemsInCart')
+    .exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  return user
+}
 export default {
   create,
   findByEmail,
@@ -131,4 +141,5 @@ export default {
   resetPassword,
   addProductToCart,
   removeProductFromCart,
+  getUserWithItemsInCart,
 }

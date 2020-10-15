@@ -1,5 +1,4 @@
 import request from 'supertest'
-import cookie from 'cookie'
 
 import { UserDocument } from '../../src/models/User'
 import app from '../../src/app'
@@ -99,7 +98,7 @@ describe('user controller', () => {
     expect(res.status).toEqual(404)
   })
 
-  it("It should update a user's password", async () => {
+  it('It should update a user\'s password', async () => {
     let res = await registerUser()
     expect(res.status).toBe(200)
     const update = {

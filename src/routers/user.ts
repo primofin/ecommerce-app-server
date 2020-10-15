@@ -7,6 +7,7 @@ import {
   updateUserPassword,
   addProductToCart,
   removeProductFromCart,
+  getUserWithItemsInCart,
 } from '../controllers/user'
 
 const router = express.Router()
@@ -14,6 +15,7 @@ const router = express.Router()
  * --------------GET ROUTES ----------------
  */
 router.get('/:userId', findById)
+router.get('/itemsInCart/:userId', getUserWithItemsInCart)
 /**
  * --------------DELETE ROUTES ----------------
  */

@@ -17,7 +17,20 @@ type ReqUser = {
   iat: string;
   exp: string;
 }
-// GET /user/:userId
+// GET /users/:userId
+export const getUserWithItemsInCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.json(await UserService.getUserWithItemsInCart(req.params.userId))
+  } catch (error) {
+    next(new NotFoundError('User not found', error))
+  }
+}
+
+// GET /users/itemsInCart/:userId
 export const findById = async (
   req: Request,
   res: Response,
@@ -29,6 +42,7 @@ export const findById = async (
     next(new NotFoundError('User not found', error))
   }
 }
+
 /**
  * GET /auth/isAuthenticated
  */

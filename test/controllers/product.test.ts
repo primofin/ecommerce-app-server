@@ -142,7 +142,7 @@ describe('product controller', () => {
       variants: ['cottons'],
     }
     res = await request(app)
-      .put(`/api/v1/products/${productId}`)
+      .patch(`/api/v1/products/${productId}`)
       .set('Cookie', [`authcookie=${headerToken}`])
       .send(update)
     expect(res.status).toEqual(200)
