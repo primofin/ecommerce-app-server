@@ -222,3 +222,35 @@ export const deleteUser = async (
     next(new NotFoundError('User not found', error))
   }
 }
+
+// UPDATE /users/addToCart/:userId
+export const addProductToCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { productId } = req.body
+    const userId = req.params.userId
+    await UserService.addProductToCart(userId, productId)
+    res.status(204).end()
+  } catch (error) {
+    next(new NotFoundError('User not found', error))
+  }
+}
+
+// UPDATE /users/removeFromCart/:userId
+export const removeProductFromCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { productId } = req.body
+    const userId = req.params.userId
+    await UserService.removeProductFromCart(userId, productId)
+    res.status(204).end()
+  } catch (error) {
+    next(new NotFoundError('User not found', error))
+  }
+}

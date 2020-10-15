@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 
 import User, { UserDocument } from '../models/User'
+import Product, { ProductDocument } from '../models/Product'
 
 async function create(user: UserDocument): Promise<UserDocument> {
   return await user.save()
@@ -86,6 +87,39 @@ async function deleteUser(userId: string): Promise<UserDocument | null> {
   return User.findByIdAndDelete(userId).exec()
 }
 
+async function addProductToCart(
+  userId: string,
+  productId: string
+): Promise<UserDocument> {
+  const user = await User.findById(userId).exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  const product = await Product.findById(productId).exec()
+  if (!product) {
+    throw new Error(`Product ${productId} not found`)
+  }
+  user.itemsInCart.push(product._id)
+  return user.save()
+}
+
+async function removeProductFromCart(
+  userId: string,
+  productId: string
+): Promise<UserDocument> {
+  const user = await User.findById(userId).exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  const product = await Product.findById(productId).exec()
+  if (!product) {
+    throw new Error(`Product ${productId} not found`)
+  }
+  const index = user.itemsInCart.indexOf(productId)
+  user.itemsInCart.splice(index, 1)
+  return user.save()
+}
+
 export default {
   create,
   findByEmail,
@@ -95,4 +129,6 @@ export default {
   deleteUser,
   updatePassword,
   resetPassword,
+  addProductToCart,
+  removeProductFromCart,
 }

@@ -18,7 +18,7 @@ export type UserDocument = Document & {
   google: Google;
   isAdmin: boolean;
   isBan: boolean;
-  itemsInCart: ProductDocument[];
+  itemsInCart: string[];
 }
 
 const userSchema = new mongoose.Schema({
