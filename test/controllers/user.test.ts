@@ -102,10 +102,11 @@ describe('user controller', () => {
     let res = await registerUser()
     expect(res.status).toBe(200)
     const update = {
-      oldPassword: '1234',
-      newPassword: '123abc',
+      oldPassword: '1234aaaa',
+      newPassword: '123abc12',
     }
     const userId = res.body._id
+    console.log('userIdtest', userId)
     res = await request(app)
       .patch(`/api/v1/users/change-password/${userId}`)
       .send(update)

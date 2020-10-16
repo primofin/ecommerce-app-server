@@ -1,8 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose'
 import validator from 'validator'
 
-import { ProductDocument } from './Product'
-
 export type Google = {
   id: string;
   token: string;

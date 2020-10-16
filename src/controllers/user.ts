@@ -208,15 +208,16 @@ export const updateUserPassword = async (
     const userId = req.params.userId
     const user = await User.findById(userId).exec()
     if (user) {
-      const isPasswordMatch = bcrypt.compare(oldPassword, user.password)
+      const isPasswordMatch = await bcrypt.compare(oldPassword, user.password)
       if (isPasswordMatch) {
         await UserService.updatePassword(userId, newPassword)
         res.status(204).end()
       } else {
-        throw new Error('The old password you have entered is incorrect')
+        res.status(400).send('The old password you have entered is incorrect')
       }
     }
   } catch (error) {
+    console.log('error', error)
     next(new NotFoundError('User not found', error))
   }
 }
