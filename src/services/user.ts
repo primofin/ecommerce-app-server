@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 
 import User, { UserDocument } from '../models/User'
-import Product, { ProductDocument } from '../models/Product'
+import Product from '../models/Product'
 
 async function create(user: UserDocument): Promise<UserDocument> {
   return await user.save()
