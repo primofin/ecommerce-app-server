@@ -61,6 +61,9 @@ async function update(
   if (update.name) {
     product.name = update.name
   }
+  if (update.price) {
+    product.price = update.price
+  }
   if (update.description) {
     product.description = update.description
   }
