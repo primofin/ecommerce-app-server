@@ -106,7 +106,6 @@ describe('user controller', () => {
       newPassword: '123abc12',
     }
     const userId = res.body._id
-    console.log('userIdtest', userId)
     res = await request(app)
       .patch(`/api/v1/users/change-password/${userId}`)
       .send(update)
