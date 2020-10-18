@@ -188,8 +188,8 @@ export const updateUser = async (
   try {
     const update = req.body
     const userId = req.params.userId
-    const updateUser = await UserService.update(userId, update)
-    res.json(updateUser)
+    const updatedUser = await UserService.update(userId, update)
+    res.json(updatedUser)
   } catch (error) {
     next(new NotFoundError('User not found', error))
   }
@@ -247,10 +247,11 @@ export const addProductToCart = async (
   try {
     const { productId } = req.body
     const userId = req.params.userId
-    await UserService.addProductToCart(userId, productId)
-    res.status(204).end()
+    const updatedUser = await UserService.addProductToCart(userId, productId)
+    res.json(updatedUser)
   } catch (error) {
-    next(new NotFoundError('User not found', error))
+    console.log(error)
+    next(new BadRequestError('Bad request Error', error))
   }
 }
 
@@ -263,8 +264,11 @@ export const removeProductFromCart = async (
   try {
     const { productId } = req.body
     const userId = req.params.userId
-    await UserService.removeProductFromCart(userId, productId)
-    res.status(204).end()
+    const updatedUser = await UserService.removeProductFromCart(
+      userId,
+      productId
+    )
+    res.json(updatedUser)
   } catch (error) {
     next(new NotFoundError('User not found', error))
   }
