@@ -113,8 +113,9 @@ export const deleteProduct = async (
   next: NextFunction
 ) => {
   try {
-    await ProductService.deleteProduct(req.params.productId)
-    res.status(204).end()
+    const response = await ProductService.deleteProduct(req.params.productId)
+    // res.status(204).end()
+    res.json(response)
   } catch (error) {
     next(new NotFoundError('Product not found', error))
   }

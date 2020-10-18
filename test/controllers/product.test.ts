@@ -165,11 +165,15 @@ describe('product controller', () => {
     expect(res.status).toEqual(404)
   })
   it('should delete an existing product', async () => {
+    const loginResponse = await login()
+    const token = cookie.parse(loginResponse.header['set-cookie'][0]).authcookie
     let res = await createProduct()
     expect(res.status).toBe(200)
     const productId = res.body._id
-    res = await request(app).delete(`/api/v1/products/${productId}`)
-    expect(res.status).toEqual(204)
+    res = await request(app)
+      .delete(`/api/v1/products/${productId}`)
+      .set('Cookie', [`authcookie=${token}`])
+    expect(res.status).toEqual(200)
     res = await request(app).get(`/api/v1/products/${productId}`)
     expect(res.status).toBe(404)
   })

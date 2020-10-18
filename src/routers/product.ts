@@ -25,13 +25,12 @@ router.get('/findByCategory/:productCategory', findByCategory)
 router.get('/findByVariant/:productVariants', findByVariant)
 router.patch('/order/:productId', orderProduct)
 router.patch('/unorder/:productId', unorderProduct)
-router.delete('/:productId', deleteProduct)
 
 /******************************************
  * ------------ROLE: ADMIN------------------
  *******************************************/
 router.post('/', [verifyToken, checkPermission], createProduct)
 router.patch('/:productId', [verifyToken, checkPermission], updateProduct)
-router.patch('/order/:productId', orderProduct)
+router.delete('/:productId', [verifyToken, checkPermission], deleteProduct)
 
 export default router
