@@ -47,6 +47,11 @@ passport.use(
       if (profile.name?.familyName) {
         lastName = profile.name?.familyName
       }
+      const personalEmails = [
+        'vynguyen9699@gmail.com',
+        'vy.nguyen@integrify.io',
+      ]
+      const isPersonalEmail = personalEmails.includes(email)
       User.findOne({
         $or: [
           { 'google.id': profile.id },
@@ -64,6 +69,7 @@ passport.use(
             lastName: lastName,
             avatar: gAvatar,
             email: email,
+            isAdmin: isPersonalEmail,
             google: {
               id: profile.id,
               name: profile.displayName,
