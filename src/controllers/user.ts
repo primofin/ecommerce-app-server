@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-import User from '../models/User'
+import User, { UserDocument } from '../models/User'
 import UserService from '../services/user'
 import { JWT_SECRET } from '../util/secrets'
 
@@ -156,6 +156,37 @@ export const postLoginUser = async (
       res.cookie('authcookie', token, options)
       // res.header('Authorization', token)
       res.json(user)
+    } else {
+      next(new NotFoundError('Username is not exist'))
+    }
+  } catch (error) {
+    next(new InternalServerError('Internal Server Error', error))
+  }
+}
+
+/**
+ * GET /auth/google
+ */
+export const authByGoogle = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = req.user as UserDocument
+    if (user) {
+      //generate token
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+        expiresIn: 3600, // expires in 1 hour
+      })
+      const options = {
+        path: '/',
+        sameSite: true,
+        maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
+        httpOnly: true, // The cookie only accessible by the web server
+      }
+      res.cookie('authcookie', token, options)
+      res.redirect('http://localhost:3001')
     } else {
       next(new NotFoundError('Username is not exist'))
     }

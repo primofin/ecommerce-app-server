@@ -39,6 +39,14 @@ passport.use(
       if (profile.emails) {
         email = profile.emails[0].value
       }
+      let firstName = ''
+      if (profile.name?.givenName) {
+        firstName = profile.name?.givenName
+      }
+      let lastName = ''
+      if (profile.name?.familyName) {
+        lastName = profile.name?.familyName
+      }
       User.findOne({
         $or: [
           { 'google.id': profile.id },
@@ -52,6 +60,8 @@ passport.use(
           done(undefined, user)
         } else {
           const newUser = new User({
+            firstName: firstName,
+            lastName: lastName,
             avatar: gAvatar,
             email: email,
             google: {

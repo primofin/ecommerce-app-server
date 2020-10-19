@@ -7,6 +7,7 @@ import {
   postLoginUser,
   logout,
   checkAuthentication,
+  authByGoogle,
 } from '../controllers/user'
 import { recover, resetPassword } from '../controllers/userPassword'
 import { verifyToken } from '../middlewares/verifyToken'
@@ -36,10 +37,7 @@ router.get(
     scope: ['profile', 'email'],
   })
 )
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-  res.redirect('/api/v1/auth/profile')
-})
-
+router.get('/google/redirect', passport.authenticate('google'), authByGoogle)
 router.get('/profile', (req, res) => {
   res.send('Profile')
 })
