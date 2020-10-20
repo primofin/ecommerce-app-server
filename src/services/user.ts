@@ -91,7 +91,7 @@ async function addProductToCart(
   userId: string,
   productId: string
 ): Promise<UserDocument> {
-  const user = await User.findById(userId).exec()
+  const user = await User.findById(userId).select('-password').exec()
   if (!user) {
     throw new Error(`User ${userId} not found`)
   }
@@ -112,12 +112,11 @@ async function addProductToCart(
   }
   return user.save()
 }
-
 async function removeProductFromCart(
   userId: string,
   productId: string
 ): Promise<UserDocument> {
-  const user = await User.findById(userId).exec()
+  const user = await User.findById(userId).select('-password').exec()
   if (!user) {
     throw new Error(`User ${userId} not found`)
   }
@@ -138,7 +137,7 @@ async function decreaseProductQuantityFromCart(
   userId: string,
   productId: string
 ): Promise<UserDocument> {
-  const user = await User.findById(userId).exec()
+  const user = await User.findById(userId).select('-password').exec()
   if (!user) {
     throw new Error(`User ${userId} not found`)
   }
