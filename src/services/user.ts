@@ -130,6 +130,27 @@ async function removeProductFromCart(
     const itemAddedIndex = user.itemsInCart.findIndex(
       (item) => item.product === product._id
     )
+    user.itemsInCart.splice(itemAddedIndex, 1)
+  }
+  return user.save()
+}
+async function decreaseProductQuantityFromCart(
+  userId: string,
+  productId: string
+): Promise<UserDocument> {
+  const user = await User.findById(userId).exec()
+  if (!user) {
+    throw new Error(`User ${userId} not found`)
+  }
+  const product = await Product.findById(productId).exec()
+  if (!product) {
+    throw new Error(`Product ${productId} not found`)
+  }
+  const itemAdded = user.itemsInCart.find((item) => item.product == productId)
+  if (itemAdded) {
+    const itemAddedIndex = user.itemsInCart.findIndex(
+      (item) => item.product === product._id
+    )
     if (itemAdded.quantity > 1) {
       itemAdded.quantity -= 1
       user.itemsInCart[itemAddedIndex] = itemAdded
@@ -160,6 +181,7 @@ export default {
   updatePassword,
   resetPassword,
   addProductToCart,
+  decreaseProductQuantityFromCart,
   removeProductFromCart,
   getUserWithItemsInCart,
 }
