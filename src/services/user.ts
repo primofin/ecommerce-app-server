@@ -99,11 +99,17 @@ async function addProductToCart(
   if (!product) {
     throw new Error(`Product ${productId} not found`)
   }
-  // const isItemAdded = user.itemsInCart.includes(product._id)
-  // if (isItemAdded) {
-  //   throw new Error(`Product ${productId} exists`)
-  // }
-  user.itemsInCart.push(product._id)
+  const itemAdded = user.itemsInCart.find((item) => item.product == productId)
+  if (itemAdded) {
+    const itemAddedIndex = user.itemsInCart.findIndex(
+      (item) => item.product === product._id
+    )
+    itemAdded.quantity += 1
+    user.itemsInCart[itemAddedIndex] = itemAdded
+  }
+  if (!itemAdded) {
+    user.itemsInCart.push({ product: productId, quantity: 1 })
+  }
   return user.save()
 }
 
@@ -119,15 +125,25 @@ async function removeProductFromCart(
   if (!product) {
     throw new Error(`Product ${productId} not found`)
   }
-  const index = user.itemsInCart.indexOf(productId)
-  user.itemsInCart.splice(index, 1)
+  const itemAdded = user.itemsInCart.find((item) => item.product == productId)
+  if (itemAdded) {
+    const itemAddedIndex = user.itemsInCart.findIndex(
+      (item) => item.product === product._id
+    )
+    if (itemAdded.quantity > 1) {
+      itemAdded.quantity -= 1
+      user.itemsInCart[itemAddedIndex] = itemAdded
+    } else if ((itemAdded.quantity = 1)) {
+      user.itemsInCart.splice(itemAddedIndex, 1)
+    }
+  }
   return user.save()
 }
 
 async function getUserWithItemsInCart(userId: string): Promise<UserDocument> {
   const user = await User.findById(userId)
     .select('-password')
-    .populate('itemsInCart')
+    .populate('itemsInCart.product')
     .exec()
   if (!user) {
     throw new Error(`User ${userId} not found`)

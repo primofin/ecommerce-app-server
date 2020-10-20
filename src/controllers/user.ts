@@ -248,7 +248,6 @@ export const updateUserPassword = async (
       }
     }
   } catch (error) {
-    console.log('error', error)
     next(new NotFoundError('User not found', error))
   }
 }

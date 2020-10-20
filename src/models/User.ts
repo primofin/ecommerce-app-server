@@ -1,6 +1,12 @@
 import mongoose, { Document, Schema } from 'mongoose'
 import validator from 'validator'
 
+// import {ProductDocument} from './Product'
+
+export type ItemInCart = {
+  product: string;
+  quantity: number;
+}
 export type Google = {
   id: string;
   token: string;
@@ -16,7 +22,8 @@ export type UserDocument = Document & {
   google: Google;
   isAdmin: boolean;
   isBan: boolean;
-  itemsInCart: string[];
+  // itemsInCart: string[];
+  itemsInCart: ItemInCart[];
 }
 
 const userSchema = new mongoose.Schema({
@@ -64,8 +71,11 @@ const userSchema = new mongoose.Schema({
   },
   itemsInCart: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Product',
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+      },
+      quantity: Number,
     },
   ],
   date: {
