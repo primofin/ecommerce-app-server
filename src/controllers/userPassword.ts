@@ -30,7 +30,7 @@ export const recover = async (
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
       expiresIn: 3600, // expires in 1 hour
     })
-    const link = `${req.protocol}://localhost:3000/api/v1/auth/reset-password/${token}`
+    const link = `${req.protocol}://localhost:3001/auth/reset-password/${token}`
     await sendEmail(
       email,
       'Password reset',
