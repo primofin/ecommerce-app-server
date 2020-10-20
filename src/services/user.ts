@@ -99,10 +99,10 @@ async function addProductToCart(
   if (!product) {
     throw new Error(`Product ${productId} not found`)
   }
-  const isItemAdded = user.itemsInCart.includes(product._id)
-  if (isItemAdded) {
-    throw new Error(`Product ${productId} exists`)
-  }
+  // const isItemAdded = user.itemsInCart.includes(product._id)
+  // if (isItemAdded) {
+  //   throw new Error(`Product ${productId} exists`)
+  // }
   user.itemsInCart.push(product._id)
   return user.save()
 }

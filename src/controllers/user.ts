@@ -55,7 +55,7 @@ export const checkAuthentication = async (
   try {
     const { userId } = req.user as ReqUser
     if (userId) {
-      const user = await UserService.findById(userId)
+      const user = await UserService.getUserWithItemsInCart(userId)
       return res.json(user)
     }
   } catch (error) {

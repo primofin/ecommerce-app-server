@@ -38,7 +38,4 @@ router.get(
   })
 )
 router.get('/google/redirect', passport.authenticate('google'), authByGoogle)
-router.get('/profile', (req, res) => {
-  res.send('Profile')
-})
 export default router
