@@ -154,7 +154,6 @@ export const postLoginUser = async (
         httpOnly: true, // The cookie only accessible by the web server
       }
       res.cookie('authcookie', token, options)
-      // res.header('Authorization', token)
       res.json(user)
     } else {
       next(new NotFoundError('Username is not exist'))
