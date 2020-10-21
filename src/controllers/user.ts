@@ -117,8 +117,19 @@ export const postRegisterUser = async (
       isAdmin,
       isBan,
     })
-    await UserService.create(user)
-    res.json(user)
+    const response = await UserService.create(user)
+    //generate token
+    const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
+      expiresIn: 3600, // expires in 1 hour
+    })
+    const options = {
+      path: '/',
+      sameSite: true,
+      maxAge: 1000 * 60 * 60 * 24, // would expire after 24 hours
+      httpOnly: true, // The cookie only accessible by the web server
+    }
+    res.cookie('authcookie', token, options)
+    res.json(response)
   } catch (error) {
     if (error.name === 'ValidationError') {
       next(new BadRequestError('Invalid Request', error))
@@ -294,6 +305,24 @@ export const removeProductFromCart = async (
     const { productId } = req.body
     const userId = req.params.userId
     const updatedUser = await UserService.removeProductFromCart(
+      userId,
+      productId
+    )
+    res.json(updatedUser)
+  } catch (error) {
+    next(new NotFoundError('User not found', error))
+  }
+}
+// UPDATE /users/decreaseProductQuantityFromCart/:userId
+export const decreaseProductQuantityFromCart = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { productId } = req.body
+    const userId = req.params.userId
+    const updatedUser = await UserService.decreaseProductQuantityFromCart(
       userId,
       productId
     )

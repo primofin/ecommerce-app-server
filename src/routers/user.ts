@@ -8,6 +8,7 @@ import {
   addProductToCart,
   removeProductFromCart,
   getUserWithItemsInCart,
+  decreaseProductQuantityFromCart,
 } from '../controllers/user'
 
 const router = express.Router()
@@ -26,6 +27,10 @@ router.delete('/:userId', deleteUser)
 router.patch('/:userId', updateUser)
 router.patch('/addToCart/:userId', addProductToCart)
 router.patch('/removeFromCart/:userId', removeProductFromCart)
+router.patch(
+  '/decreaseProductQuantityFromCart/:userId',
+  decreaseProductQuantityFromCart
+)
 router.patch('/:userId', updateUser)
 router.patch('/change-password/:userId', updateUserPassword)
 export default router
