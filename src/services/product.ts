@@ -6,7 +6,7 @@ function create(product: ProductDocument): Promise<ProductDocument> {
 }
 
 function findAll(): Promise<ProductDocument[]> {
-  return Product.find().sort({ name: 1 }).exec() // Return a Promise
+  return Product.find().sort({ date: -1 }).exec() // Return a Promise
 }
 
 // find product by ID

@@ -80,7 +80,7 @@ export const findByName = async (
     next(new NotFoundError('Product not found', error))
   }
 }
-// GET /product/:productCategory
+// GET /products/:productCategory
 export const findByCategory = async (
   req: Request,
   res: Response,
@@ -93,7 +93,7 @@ export const findByCategory = async (
   }
 }
 
-// GET /product/:productVariants
+// GET /products/:productVariants
 export const findByVariant = async (
   req: Request,
   res: Response,

@@ -49,6 +49,10 @@ const productSchema = new mongoose.Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  date: {
+    type: Date,
+    default: Date.now(),
+  },
 })
 
 export default mongoose.model<ProductDocument>('Product', productSchema)
