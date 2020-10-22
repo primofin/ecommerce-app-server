@@ -22,7 +22,7 @@ router.get('/', findAll)
 router.get('/:productId', findById)
 router.get('/findByName/:productName', findByName)
 router.get('/findByCategory/:productCategory', findByCategory)
-router.get('/findByVariant/:productVariants', findByVariant)
+router.get('/findByVariant/:productVariant', findByVariant)
 router.patch('/order/:productId', orderProduct)
 router.patch('/unorder/:productId', unorderProduct)
 

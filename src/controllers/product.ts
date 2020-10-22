@@ -93,14 +93,14 @@ export const findByCategory = async (
   }
 }
 
-// GET /products/:productVariants
+// GET /products/:productVariant
 export const findByVariant = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    res.json(await ProductService.findByVariant(req.params.productVariants))
+    res.json(await ProductService.findByVariant(req.params.productVariant))
   } catch (error) {
     next(new NotFoundError('Product not found', error))
   }
