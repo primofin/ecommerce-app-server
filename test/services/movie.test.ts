@@ -56,6 +56,7 @@ describe('movie service', () => {
     const update = {
       name: 'Shrek',
       publishedYear: 2001,
+      duration: 100
     }
     const updated = await MovieService.update(movie._id, update)
     expect(updated).toHaveProperty('_id', movie._id)

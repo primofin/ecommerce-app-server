@@ -1,12 +1,12 @@
 import mongoose, { Document } from 'mongoose'
 
 export type MovieDocument = Document & {
-  name: string
-  publishedYear: number
-  genres: string[]
-  duration: number
-  rating: number
-  characters: string[]
+  name: string;
+  publishedYear: number;
+  genres: string[];
+  duration: number;
+  rating: number;
+  characters: string[];
 }
 
 const movieSchema = new mongoose.Schema({
