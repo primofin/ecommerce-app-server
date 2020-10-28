@@ -75,6 +75,9 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.get('/', (req, res) => {
+  res.send('welcome')
+})
 // Use movie router
 app.use('/api/v1/movies', movieRouter)
 // Use product router
