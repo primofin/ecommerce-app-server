@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 
-import UserService from '../services/User'
+import UserService from '../services/user'
 type ReqUser = {
   userId: string;
   iat: string;
