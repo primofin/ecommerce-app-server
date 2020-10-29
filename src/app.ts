@@ -45,7 +45,10 @@ mongoose
 app.use(cookieParser())
 app.use(
   cors({
-    origin: 'http://localhost:3001',
+    origin: [
+      'http://localhost:3001',
+      'https://ecommerce-app-client.herokuapp.com',
+    ],
     credentials: true,
   })
 )
