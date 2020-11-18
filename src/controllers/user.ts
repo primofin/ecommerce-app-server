@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import User, { UserDocument } from '../models/User'
 import UserService from '../services/user'
-import { JWT_SECRET } from '../util/secrets'
+import { JWT_SECRET, ENVIRONMENT } from '../util/secrets'
 
 import {
   NotFoundError,
@@ -196,7 +196,11 @@ export const authByGoogle = async (
         httpOnly: true, // The cookie only accessible by the web server
       }
       res.cookie('authcookie', token, options)
-      res.redirect('http://localhost:3001')
+      if (ENVIRONMENT === 'production') {
+        res.redirect('https://ecommerce-app-client.herokuapp.com/')
+      } else {
+        res.redirect('http://localhost:3001')
+      }
     } else {
       next(new NotFoundError('Username is not exist'))
     }
