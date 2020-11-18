@@ -42,6 +42,9 @@ mongoose
     )
     process.exit(1)
   })
+
+app.set('trust proxy', true)
+
 app.use(cookieParser())
 app.use(
   cors({
